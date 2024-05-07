@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Interactive Data Visualization</title>
+    <style>
+        .chart-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        canvas{
+            margin-bottom: 5rem;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="chart-container">
+        <canvas id="myChart"></canvas>
+        <canvas id="myChart1" style="width:100%;max-width:600px"></canvas>></canvas>
+        <canvas id="myChart2" style="width:100%;max-width:600px"></canvas>></canvas>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script>
+        const data = {
+            labels: ['February', 'March', 'April', 'May'],
+            datasets: [{
+                label: 'Plastic Surgery cases in South Korea Seoul during the year 2020',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                data: [13800, 13000, 13500, 12700],
+            }],
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Plastic Surgery Data',
+                    },
+                },
+            },
+        };
+
+        const ctx = document.getElementById('myChart').getContext('2d');
+        const myChart = new Chart(ctx, config);
+
+        myChart.options.plugins.tooltip = {
+            callbacks: {
+                label: function (context) {
+                    return `Sales: ${context.parsed.y}`;
+                },
+            },
+        };
+
+
+        const chartAnimation = anime({
+            targets: myChart.data.datasets[0].data,
+            easing: 'linear',
+            delay: anime.stagger(200),
+            duration: 1000,
+            loop: true,
+            direction: 'alternate',
+            update: function (anim) {
+                myChart.update();
+            },
+        });
+
+        const xValues = ['February', 'March', 'April', 'May'];
+        const yValues = [13800, 13000, 13500, 12700];
+
+        new Chart("myChart1", {
+            type: "line",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: "rgba(0,0,255,1.0)",
+                    borderColor: "rgba(0,0,255,0.1)",
+                    data: yValues,
+                    label: "Plastic Surgery cases in South Korea Seoul during the year 2020"
+                }]
+            },
+            options: {
+                legend: { display: false },
+                scales: {
+                    yAxes: [{ ticks: { min: 6, max: 16 } }],
+                }
+            }
+        });
+
+        new Chart("myChart2", {
+            type: "pie",
+            data: {
+                labels: xValues,
+                datasets: [{
+                    backgroundColor: [ "#b91d47",
+  "#00aba9",
+  "#2b5797",
+  "#e8c3b9",
+  "#1e7145"],
+                    data: yValues
+                }]
+            },
+            options: {
+                title: {
+                    display: true,
+                    text: "Plastic Surgery cases in South Korea Seoul during the year 2020"
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
